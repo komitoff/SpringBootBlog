@@ -1,11 +1,10 @@
-package softuniBlog.controller;
+package springBootBlog.controller;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -14,12 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import softuniBlog.bindingModel.UserBindingModel;
-import softuniBlog.entity.Role;
-import softuniBlog.entity.User;
-import softuniBlog.repository.RoleRepository;
-import softuniBlog.repository.UserRepository;
-import softuniBlog.service.UserService;
+import springBootBlog.bindingModel.UserBindingModel;
+import springBootBlog.entity.Role;
+import springBootBlog.entity.User;
+import springBootBlog.repository.RoleRepository;
+import springBootBlog.repository.UserRepository;
+import springBootBlog.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 

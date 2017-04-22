@@ -1,6 +1,4 @@
-package softuniBlog.entity;
-
-import org.springframework.format.annotation.DateTimeFormat;
+package springBootBlog.entity;
 
 import javax.persistence.*;
 import java.util.Date;

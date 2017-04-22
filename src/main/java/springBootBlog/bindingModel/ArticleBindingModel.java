@@ -1,4 +1,4 @@
-package softuniBlog.bindingModel;
+package springBootBlog.bindingModel;
 
 import javax.validation.constraints.NotNull;
 

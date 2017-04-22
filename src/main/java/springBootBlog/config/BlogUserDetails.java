@@ -1,10 +1,10 @@
-package softuniBlog.config;
+package springBootBlog.config;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
-import softuniBlog.entity.User;
+import springBootBlog.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
