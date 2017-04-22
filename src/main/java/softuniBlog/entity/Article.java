@@ -11,7 +11,7 @@ public class Article {
     private String title;
     private String content;
     private User author;
-    private Integer viewedCount;
+    private Integer viewedCount = 0;
     private Date dateAdded;
 
     private Article() {
