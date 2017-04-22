@@ -78,4 +78,9 @@ public class Article {
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }
+
+    @Transient
+    public String getSummary() {
+        return this.getContent().substring(0, this.getContent().length() / 2) + "....";
+    }
 }
