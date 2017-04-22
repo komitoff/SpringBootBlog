@@ -32,9 +32,26 @@
                             </div>
 
                             <div class="pull-right">
-                                <small class="author" th:text="${article.author.fullName}"></small>
-                                <small class="viewed" th:text="${article.viewedCount}"></small>
-                                <small class="date" th:text="${article.dateAdded}"></small>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <small class="user" th:text="${article.author.fullName}"></small>
+                                        </td>
+                                        <td>
+                                            <span class="label label-primary">
+                                                <small class="date" th:text="${article.dateAdded}"></small>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge">
+                                                <small class="viewed" th:text="${article.viewedCount}"></small>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+
                             </div>
                         </footer>
                     </article>

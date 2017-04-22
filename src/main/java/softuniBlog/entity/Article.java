@@ -25,9 +25,12 @@ public class Article {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.dateAdded = new Date();
     }
 
-    public Article() { }
+    public Article() {
+        this.dateAdded = new Date();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -76,7 +79,7 @@ public class Article {
         this.author = author;
     }
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Temporal(TemporalType.DATE)
     public Date getDateAdded() {
         return dateAdded;
     }
