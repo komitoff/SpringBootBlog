@@ -12,6 +12,7 @@ import softuniBlog.entity.Article;
 import softuniBlog.entity.User;
 import softuniBlog.repository.ArticleRepository;
 import softuniBlog.repository.UserRepository;
+import softuniBlog.service.UserService;
 
 import javax.persistence.Id;
 import java.util.List;
@@ -23,6 +24,8 @@ public class HomeController {
     private ArticleRepository articleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -40,11 +43,7 @@ public class HomeController {
 
         if(!(SecurityContextHolder.getContext().getAuthentication()
                 instanceof AnonymousAuthenticationToken)) {
-            UserDetails user = (UserDetails) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            User userEntity = this.userRepository.findByEmail(user.getUsername());
+            User userEntity = userService.getCurrentUser();
 
             model.addAttribute("user", userEntity);
         }

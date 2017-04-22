@@ -14,6 +14,7 @@ import softuniBlog.entity.Article;
 import softuniBlog.entity.User;
 import softuniBlog.repository.ArticleRepository;
 import softuniBlog.repository.UserRepository;
+import softuniBlog.service.UserService;
 
 import java.beans.Transient;
 
@@ -24,6 +25,8 @@ public class ArticleController {
     private ArticleRepository articleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("article/create")
     @PreAuthorize("isAuthenticated()")
@@ -36,11 +39,8 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/article/create")
     public String createProcess (ArticleBindingModel articleBindingModel) {
-        UserDetails user = (UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        User userEntity = this.userRepository.findByEmail(user.getUsername());
+
+        User userEntity = userService.getCurrentUser();
 
         Article articleEntity = new Article(
                 articleBindingModel.getTitle(),
@@ -127,12 +127,8 @@ public class ArticleController {
 
     @Transient
     public boolean isAdminOrAuthor(Article article) {
-        UserDetails user = (UserDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
 
-        User userEntity = this.userRepository.findByEmail(user.getUsername());
+        User userEntity = userService.getCurrentUser();
 
         return userEntity.isAdmin() || userEntity.isAuthor(article);
     }
