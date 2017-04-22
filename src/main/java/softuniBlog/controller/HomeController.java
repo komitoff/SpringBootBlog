@@ -13,6 +13,7 @@ import softuniBlog.entity.User;
 import softuniBlog.repository.ArticleRepository;
 import softuniBlog.repository.UserRepository;
 
+import javax.persistence.Id;
 import java.util.List;
 
 @Controller
@@ -23,7 +24,6 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
-
     @GetMapping("/")
     public String index(Model model) {
         List<Article> articles = this.articleRepository.findAll();
@@ -33,21 +33,21 @@ public class HomeController {
     }
 
     @GetMapping("/article/{id}")
-    public String details(Model model, @PathVariable Long id) {
+    public String details(Model model, @PathVariable Integer id) {
         if(!this.articleRepository.exists(id)) {
             return "redirect:/";
         }
 
-//        if(!(SecurityContextHolder.getContext().getAuthentication()
-//                instanceof AnonymousAuthenticationToken)) {
-//            UserDetails user = (UserDetails) SecurityContextHolder
-//                    .getContext()
-//                    .getAuthentication()
-//                    .getPrincipal();
-//            User userEntity = this.userRepository.findByEmail(user.getUsername());
-//
-//            model.addAttribute("user", userEntity);
-//        }
+        if(!(SecurityContextHolder.getContext().getAuthentication()
+                instanceof AnonymousAuthenticationToken)) {
+            UserDetails user = (UserDetails) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            User userEntity = this.userRepository.findByEmail(user.getUsername());
+
+            model.addAttribute("user", userEntity);
+        }
 
         Article article = this.articleRepository.findOne(id);
         article.setViewedCount(article.getViewedCount() + 1);

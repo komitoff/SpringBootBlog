@@ -1,37 +1,41 @@
 package softuniBlog.entity;
 
-import org.springframework.jmx.export.annotation.ManagedNotification;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name="articles")
 public class Article {
-    private Long id;
-    private String title;
-    private String content;
-    private User author;
-    private Integer viewedCount = 0;
-    private Date dateAdded;
 
-    private Article() {
-        this.dateAdded = new Date();
-    }
+    private int id;
+
+    private String title;
+
+    private int viewedCount;
+
+    private String content;
+
+    private User author;
+
+    private Date dateAdded;
 
     public Article(String title, String content, User author) {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.dateAdded = new Date();
     }
+
+    public Article() { }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,6 +49,15 @@ public class Article {
     }
 
     @Column(nullable = false)
+    public int getViewedCount() {
+        return viewedCount;
+    }
+
+    public void setViewedCount(int viewedCount) {
+        this.viewedCount = viewedCount;
+    }
+
+    @Column(columnDefinition = "text", nullable = false)
     public String getContent() {
         return content;
     }
@@ -53,7 +66,7 @@ public class Article {
         this.content = content;
     }
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(nullable = false, name = "authorId")
     public User getAuthor() {
         return author;
@@ -63,14 +76,7 @@ public class Article {
         this.author = author;
     }
 
-    public Integer getViewedCount() {
-        return viewedCount;
-    }
-
-    public void setViewedCount(Integer viewedCount) {
-        this.viewedCount = viewedCount;
-    }
-
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     public Date getDateAdded() {
         return dateAdded;
     }
@@ -81,6 +87,6 @@ public class Article {
 
     @Transient
     public String getSummary() {
-        return this.getContent().substring(0, this.getContent().length() / 2) + "....";
+        return this.getContent().substring(0, this.getContent().length()/5) + "....";
     }
 }
