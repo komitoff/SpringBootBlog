@@ -19,6 +19,7 @@ import softuniBlog.entity.Role;
 import softuniBlog.entity.User;
 import softuniBlog.repository.RoleRepository;
 import softuniBlog.repository.UserRepository;
+import softuniBlog.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,9 +27,11 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -82,13 +85,9 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public String profilePage(Model model){
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
+        User userEntity = userService.getCurrentUser();
 
-        User user = this.userRepository.findByEmail(principal.getUsername());
-
-        model.addAttribute("user", user);
+        model.addAttribute("user", userEntity);
         model.addAttribute("view", "user/profile");
 
         return "base-layout";

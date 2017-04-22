@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import softuniBlog.entity.User;
 import softuniBlog.repository.UserRepository;
 
-@Service
+@Service("userService")
 public class UserService {
 
     @Autowired
