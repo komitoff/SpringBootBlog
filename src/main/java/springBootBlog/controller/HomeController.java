@@ -1,6 +1,7 @@
 package springBootBlog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
 import springBootBlog.service.UserServiceImpl;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Controller
@@ -28,10 +30,8 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         List<Article> articles = this.articleRepository.findAll();
-        List<Article> latestFiveArticles = this.articleRepository.findByIdOrderBydateAddedDesc();
         model.addAttribute("view", "home/index");
         model.addAttribute("articles", articles);
-        model.addAttribute("latestFiveArticles", latestFiveArticles);
         return "base-layout";
     }
 
