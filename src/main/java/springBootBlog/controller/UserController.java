@@ -18,7 +18,7 @@ import springBootBlog.entity.Role;
 import springBootBlog.entity.User;
 import springBootBlog.repository.RoleRepository;
 import springBootBlog.repository.UserRepository;
-import springBootBlog.service.UserService;
+import springBootBlog.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/register")
     public String register(Model model) {

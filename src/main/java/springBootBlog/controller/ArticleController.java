@@ -12,7 +12,7 @@ import springBootBlog.entity.Article;
 import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
-import springBootBlog.service.UserService;
+import springBootBlog.service.UserServiceImpl;
 
 import java.beans.Transient;
 
@@ -24,7 +24,7 @@ public class ArticleController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("article/create")
     @PreAuthorize("isAuthenticated()")

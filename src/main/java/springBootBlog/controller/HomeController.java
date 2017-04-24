@@ -11,7 +11,7 @@ import springBootBlog.entity.Article;
 import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
-import springBootBlog.service.UserService;
+import springBootBlog.service.UserServiceImpl;
 
 import java.util.List;
 
@@ -23,13 +23,15 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/")
     public String index(Model model) {
         List<Article> articles = this.articleRepository.findAll();
+        List<Article> latestFiveArticles = this.articleRepository.findByIdOrderBydateAddedDesc();
         model.addAttribute("view", "home/index");
         model.addAttribute("articles", articles);
+        model.addAttribute("latestFiveArticles", latestFiveArticles);
         return "base-layout";
     }
 

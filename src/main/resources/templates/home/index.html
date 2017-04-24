@@ -9,9 +9,12 @@
             <div class="col-md-4">
                 <div class="list-group table-of-contents">
                     <h3>Last Posts</h3>
-                    <a class="list-group-item" href="#">Article 1</a>
-                    <a class="list-group-item" href="#">Article 1</a>
-                    <a class="list-group-item" href="#">Article 1</a>
+                    <th:block th:each="article : ${latestFiveArticles}">
+                        <a class="list-group-item" th:href="@{/article/{id}(id=${article.id})}">
+                            <span th:text="${article.title}"></span>
+                            <span th:text="${article.dateAdded}"></span>
+                        </a>
+                    </th:block>
                 </div>
             </div>
         </div>
