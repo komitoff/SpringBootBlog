@@ -9,7 +9,7 @@
             <div class="col-md-4">
                 <div class="list-group table-of-contents">
                     <h3>Last Posts</h3>
-                    <th:block th:each="article : ${articles}">
+                    <th:block th:each="article : ${lastFiveArticles}">
                         <a class="list-group-item" th:href="@{/article/{id}(id=${article.id})}">
                             <span th:text="${article.title}"></span>
                             <span th:text="${article.dateAdded}"></span>

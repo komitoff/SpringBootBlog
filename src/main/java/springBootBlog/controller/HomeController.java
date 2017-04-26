@@ -15,7 +15,9 @@ import springBootBlog.repository.UserRepository;
 import springBootBlog.service.UserServiceImpl;
 
 import java.awt.print.Pageable;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -30,8 +32,16 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         List<Article> articles = this.articleRepository.findAll();
-        model.addAttribute("view", "home/index");
+        List<Article> lastFiveArticles = articles
+                .stream()
+                .sorted((x, y) -> y.getDateAdded().compareTo(x.getDateAdded()))
+                .limit(5)
+                .collect(Collectors.toList());
+
+        model.addAttribute("lastFiveArticles", lastFiveArticles);
         model.addAttribute("articles", articles);
+        model.addAttribute("view", "home/index");
+
         return "base-layout";
     }
 
