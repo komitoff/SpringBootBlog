@@ -94,6 +94,7 @@ public class UserController {
     }
 
     @GetMapping("/user/users")
+    @PreAuthorize("isAuthenticated()")
     public String showAllUsers(Model model) {
         List<User> users = this.userRepository.findAll();
         model.addAttribute("users", users);
