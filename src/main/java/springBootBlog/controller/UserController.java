@@ -21,6 +21,7 @@ import springBootBlog.repository.UserRepository;
 import springBootBlog.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -89,6 +90,14 @@ public class UserController {
         model.addAttribute("user", userEntity);
         model.addAttribute("view", "user/profile");
 
+        return "base-layout";
+    }
+
+    @GetMapping("/user/users")
+    public String showAllUsers(Model model) {
+        List<User> users = this.userRepository.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("view","user/users");
         return "base-layout";
     }
 }
