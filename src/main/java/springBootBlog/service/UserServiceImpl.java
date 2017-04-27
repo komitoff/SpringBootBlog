@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import springBootBlog.entity.User;
 import springBootBlog.repository.UserRepository;
 
-@Service("userService")
+import java.util.List;
+
+@Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -21,5 +23,21 @@ public class UserServiceImpl implements UserService{
                 .getPrincipal();
         User userEntity = this.userRepository.findByEmail(user.getUsername());
         return userEntity;
+    }
+
+    @Override
+    public User createUser(String email, String fullName, String password) {
+        User user = new User(email, fullName, password);
+        return user;
+    }
+
+    @Override
+    public void saveAndFlush(User user) {
+        this.userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 }

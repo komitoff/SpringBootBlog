@@ -12,6 +12,8 @@ import springBootBlog.entity.Article;
 import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
+import springBootBlog.service.ArticleService;
+import springBootBlog.service.UserService;
 import springBootBlog.service.UserServiceImpl;
 
 import java.awt.print.Pageable;
@@ -23,20 +25,14 @@ import java.util.stream.Collectors;
 public class HomeController {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Article> articles = this.articleRepository.findAll();
-        List<Article> lastFiveArticles = articles
-                .stream()
-                .sorted((x, y) -> y.getDateAdded().compareTo(x.getDateAdded()))
-                .limit(5)
-                .collect(Collectors.toList());
+        List<Article> articles = this.articleService.findAll();
+        List<Article> lastFiveArticles = this.articleService.lastFiveArticles();
 
         model.addAttribute("lastFiveArticles", lastFiveArticles);
         model.addAttribute("articles", articles);
@@ -47,7 +43,7 @@ public class HomeController {
 
     @GetMapping("/article/{id}")
     public String details(Model model, @PathVariable Integer id) {
-        if(!this.articleRepository.exists(id)) {
+        if(!this.articleService.exists(id)) {
             return "redirect:/";
         }
 
@@ -58,9 +54,9 @@ public class HomeController {
             model.addAttribute("user", userEntity);
         }
 
-        Article article = this.articleRepository.findOne(id);
+        Article article = this.articleService.findOne(id);
         article.setViewedCount(article.getViewedCount() + 1);
-        this.articleRepository.saveAndFlush(article);
+        this.articleService.saveAndFlush(article);
         model.addAttribute("view", "article/details");
         model.addAttribute("article", article);
         return "base-layout";

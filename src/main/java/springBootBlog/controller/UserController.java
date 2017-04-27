@@ -17,8 +17,7 @@ import springBootBlog.bindingModel.UserBindingModel;
 import springBootBlog.entity.Role;
 import springBootBlog.entity.User;
 import springBootBlog.repository.RoleRepository;
-import springBootBlog.repository.UserRepository;
-import springBootBlog.service.UserServiceImpl;
+import springBootBlog.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -29,9 +28,7 @@ public class UserController {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -48,8 +45,7 @@ public class UserController {
         }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-        User user = new User(
+        User user = this.userService.createUser(
                 userBindingModel.getEmail(),
                 userBindingModel.getFullName(),
                 bCryptPasswordEncoder.encode(userBindingModel.getPassword())
@@ -59,7 +55,7 @@ public class UserController {
 
         user.addRole(userRole);
 
-        this.userRepository.saveAndFlush(user);
+        this.userService.saveAndFlush(user);
 
         return "redirect:/login";
     }
@@ -96,7 +92,7 @@ public class UserController {
     @GetMapping("/user/users")
     @PreAuthorize("isAuthenticated()")
     public String showAllUsers(Model model) {
-        List<User> users = this.userRepository.findAll();
+        List<User> users = this.userService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("view","user/users");
         return "base-layout";

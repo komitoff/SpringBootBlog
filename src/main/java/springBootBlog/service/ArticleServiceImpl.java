@@ -6,6 +6,9 @@ import springBootBlog.entity.Article;
 import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ArticleServiceImpl implements ArticleService{
 
@@ -33,8 +36,24 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article create(String title, String content, User user) {
+    public Article createArticle(String title, String content, User user) {
         Article article = new Article(title, content, user);
         return article;
+    }
+
+    @Override
+    public List<Article> findAll() {
+        return this.articleRepository.findAll();
+    }
+
+    @Override
+    public List<Article> lastFiveArticles() {
+        List<Article> latest5 = this.articleRepository
+                .findAll()
+                .stream()
+                .sorted((x, y) -> y.getDateAdded().compareTo(x.getDateAdded()))
+                .limit(5)
+                .collect(Collectors.toList());
+        return latest5;
     }
 }

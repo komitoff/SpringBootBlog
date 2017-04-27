@@ -13,6 +13,7 @@ import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
 import springBootBlog.service.ArticleService;
+import springBootBlog.service.UserService;
 import springBootBlog.service.UserServiceImpl;
 
 import java.beans.Transient;
@@ -21,7 +22,7 @@ import java.beans.Transient;
 public class ArticleController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
     private ArticleService articleService;
@@ -41,7 +42,7 @@ public class ArticleController {
 
         User userEntity = userService.getCurrentUser();
 
-        Article articleEntity = articleService.create(
+        Article articleEntity = articleService.createArticle(
                 articleBindingModel.getTitle(),
                 articleBindingModel.getContent(),
                 userEntity
