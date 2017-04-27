@@ -12,6 +12,7 @@ import springBootBlog.entity.Article;
 import springBootBlog.entity.User;
 import springBootBlog.repository.ArticleRepository;
 import springBootBlog.repository.UserRepository;
+import springBootBlog.service.ArticleService;
 import springBootBlog.service.UserServiceImpl;
 
 import java.beans.Transient;
@@ -20,11 +21,11 @@ import java.beans.Transient;
 public class ArticleController {
 
     @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private ArticleService articleService;
+
 
     @GetMapping("article/create")
     @PreAuthorize("isAuthenticated()")
@@ -40,24 +41,24 @@ public class ArticleController {
 
         User userEntity = userService.getCurrentUser();
 
-        Article articleEntity = new Article(
+        Article articleEntity = articleService.create(
                 articleBindingModel.getTitle(),
                 articleBindingModel.getContent(),
                 userEntity
         );
 
-        this.articleRepository.saveAndFlush(articleEntity);
+        this.articleService.saveAndFlush(articleEntity);
         return ("redirect:/");
     }
 
     @GetMapping("/article/edit/{id}")
     @PreAuthorize("isAuthenticated()")
     public String edit(@PathVariable Integer id, Model model) {
-        if(!this.articleRepository.exists(id)) {
+        if(!this.articleService.exists(id)) {
             return "redirect:/";
         }
 
-        Article article = this.articleRepository.findOne(id);
+        Article article = this.articleService.findOne(id);
 
         if (!isAdminOrAuthor(article)) {
             return "redirect:/article/" + id;
@@ -74,28 +75,28 @@ public class ArticleController {
     public String editProcess(
             @PathVariable Integer id,
             ArticleBindingModel articleBindingModel) {
-        if(!this.articleRepository.exists(id)) {
+        if(!this.articleService.exists(id)) {
             return "redirect:/";
         }
-        Article article = this.articleRepository.findOne(id);
+        Article article = this.articleService.findOne(id);
 
         if (!isAdminOrAuthor(article)) {
             return "redirect:/article/" + id;
         }
         article.setTitle(articleBindingModel.getTitle());
         article.setContent(articleBindingModel.getContent());
-        this.articleRepository.saveAndFlush(article);
+        this.articleService.saveAndFlush(article);
         return "redirect:/";
     }
 
     @GetMapping("/article/delete/{id}")
     @PreAuthorize("isAuthenticated()")
     public String delete(@PathVariable Integer id, Model model) {
-        if(!this.articleRepository.exists(id)) {
+        if(!this.articleService.exists(id)) {
             return "redirect:/";
         }
 
-        Article article = this.articleRepository.findOne(id);
+        Article article = this.articleService.findOne(id);
 
         if (!isAdminOrAuthor(article)) {
             return "redirect:/article/"+id;
@@ -109,17 +110,17 @@ public class ArticleController {
 
     @PostMapping("/article/delete/{id}")
     public String deleteProcess(@PathVariable Integer id) {
-        if(!this.articleRepository.exists(id)) {
+        if(!this.articleService.exists(id)) {
             return "redirect:/";
         }
 
-        Article article = this.articleRepository.findOne(id);
+        Article article = this.articleService.findOne(id);
 
         if (!isAdminOrAuthor(article)) {
             return "redirect:/article/" + id;
         }
 
-        this.articleRepository.delete(article);
+        this.articleService.delete(article);
         return "redirect:/";
     }
 
